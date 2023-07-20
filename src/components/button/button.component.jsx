@@ -10,13 +10,13 @@ const BUTTON_TYPE_CLASSES = {
 const getButton = (buttonType = BUTTON_TYPE_CLASSES.base) => {
     switch (buttonType) {
         case 'base':
-            return BaseButton
+            return BaseButton;
         case 'google':
-            return GoogleSignInButton
+            return GoogleSignInButton;
         case 'inverted':
-            return InvertedButton
+            return InvertedButton;
         default:
-            return BaseButton
+            return BaseButton;
     } 
 }
 
