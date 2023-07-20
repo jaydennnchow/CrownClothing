@@ -1,0 +1,23 @@
+.cart-icon-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+
+    .shopping-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .item-count {
+        position: absolute;
+        // 如果在绝对定位中只指定了 bottom 属性，
+        // 而没有指定 top、left 和 right 属性，则其他三个值将默认为 auto。
+        bottom: 12px;
+        font-size: 10px;
+        font-weight: bold;
+    }
+}

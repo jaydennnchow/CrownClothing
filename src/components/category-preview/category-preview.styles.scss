@@ -1,0 +1,37 @@
+.category-preview-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+
+    .title {
+        display: block;
+        font-size: 28px;
+        transition: all .3s ease;
+        margin-top: 20px;
+        margin-bottom: 20px;
+
+        &:hover{
+            font-size: 30px;
+            font-weight: bold;
+        }
+    }
+
+    .preview {
+        display: grid;
+        /*
+        * grid-template-rows 属性接受一个由空格分隔的值列表，每个值表示一个行的高度。
+                        可以使用长度值（如像素、百分比等），也可以使用关键字（如 fr、auto 等）。
+                        fr 是一种特殊的关键字，表示行高度的比例，即根据可用空间将高度分配给行。
+                        例如，如果有两行，一个使用 1fr，另一个使用 2fr，则第一个行的高度将是第二个行的一半。
+        * 使用范例： 
+            grid-template-rows: 100px 200px 300px;     创建三行，分别为100像素、200像素和300像素高度的行。
+            grid-template-rows: 1fr 2fr;               创建两行，第一行的高度为第二行的一半。
+            grid-template-rows: repeat(4, 1fr);        创建四行，每行的高度都相等并且占据可用空间的比例。
+    */
+        grid-template-columns: repeat(4, 1fr);
+        // 列 之间的宽度
+        column-gap: 20px;
+        // 行 之间的宽度
+        // row-gap: 50px;
+    }
+}
