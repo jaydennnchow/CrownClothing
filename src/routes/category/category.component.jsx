@@ -1,18 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react'
 import './category.styles.scss'
 import { useParams } from 'react-router-dom'
-import { CategoriesContext } from '../../context/categories.component'
+// import { CategoriesContext } from '../../context/categories.component'
 import ProductCard from '../../components/product-card/product-card.component'
+import {useSelector} from 'react-redux'
+import { getCategoriesMap } from '../../store/categories/category.selector'
 
 const Category = () => {
 
     const params = useParams()
     const {category} = params
 
-    const {categoriesMap} = useContext(CategoriesContext)
+    // const {categoriesMap} = useContext(CategoriesContext)
+    const categoriesMap = useSelector(getCategoriesMap)
 
     const [products,setProducts] = useState([])
-    // 只有当 category 和 categoriesMap 发生改变时，才重新获取 products (性能优化)
+    // 只有当 category 或 categoriesMap 发生改变时，才重新获取 products (性能优化)
     // 如果不用 useEffect，组件每次重新渲染 都会获取 products
     useEffect(()=>{
         setProducts(categoriesMap[category])

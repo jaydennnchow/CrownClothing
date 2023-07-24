@@ -1,22 +1,33 @@
 import React, { useContext } from 'react'
-import { Link, Outlet } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import { ReactComponent as CrwnLogo } from '../../assets/crown.svg'
-// import './navigation.styles.scss'
 import { NavigationContainer, LogoContainer, NavLinksContainer, NavLink } from './navigation.styles'
-import { UserContext } from '../../context/user.component'
+// import { UserContext } from '../../context/user.component'
+import { useSelector, useDispatch } from 'react-redux'
 import { signOutUser } from '../utils/firebase.utils'
 import CartIcon from '../../components/cart-icon/cart-icon-component'
 import CartDropdown from '../../components/cart-dropdown/cart-dropdown.component'
 import { CartContext } from '../../context/cart.component'
+import { getCurrentUser } from '../../store/user/user.selector'
+import { setCurrentUser } from '../../store/user/user.action'
 
 const Navigation = () => {
 
-    const { currentUser, setCurrentUser } = useContext(UserContext)
+    // const { currentUser, setCurrentUser } = useContext(UserContext)
+
+    /**
+     * state: the entire state object in Redux store
+     * state.user: the userReducer
+     * state.user.currentUser: the actual value in the userReducer
+     */
+    // const currentUser = useSelector(state => state.user.currentUser)
+    const currentUser = useSelector(getCurrentUser)
+    const dispatch = useDispatch()
     const { isCartOpen, cartItems } = useContext(CartContext)
 
     const signOutHandler = async () => {
         await signOutUser()
-        setCurrentUser(null)
+        dispatch(setCurrentUser(null))
     }
 
     return (

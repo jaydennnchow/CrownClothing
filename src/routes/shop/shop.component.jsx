@@ -1,7 +1,10 @@
-import React, { } from 'react'
+import React, { useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import CategoriesPreview from '../categories-preview/categories-preview.component'
 import Category from '../category/category.component'
+import { getCategoriesAndDocuments2 } from '../utils/firebase.utils'
+import { setCategoriesMap } from '../../store/categories/category.action'
+import { useDispatch } from 'react-redux'
 
 const Shop = () => {
 
@@ -10,6 +13,16 @@ const Shop = () => {
    *    只要是 "/shop/"，都会渲染 此组件
    *    然后，组件再根据 路由的具体路径，渲染不同的组件
    */
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    const getCategoriesMap = async () => {
+      const categoriesMap = await getCategoriesAndDocuments2()
+      dispatch(setCategoriesMap(categoriesMap))
+    }
+    getCategoriesMap()
+  }, [])
 
   return (
     <Routes>
