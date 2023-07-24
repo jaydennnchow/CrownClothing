@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 // import { CategoriesContext } from '../../context/categories.component'
 import ProductCard from '../../components/product-card/product-card.component'
 import {useSelector} from 'react-redux'
-import { getCategoriesMap } from '../../store/categories/category.selector'
+import { getCategories } from '../../store/categories/category.selector'
 
 const Category = () => {
 
@@ -12,7 +12,7 @@ const Category = () => {
     const {category} = params
 
     // const {categoriesMap} = useContext(CategoriesContext)
-    const categoriesMap = useSelector(getCategoriesMap)
+    const categoriesMap = useSelector(getCategories)
 
     const [products,setProducts] = useState([])
     // 只有当 category 或 categoriesMap 发生改变时，才重新获取 products (性能优化)

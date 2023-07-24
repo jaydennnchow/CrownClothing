@@ -162,11 +162,16 @@ export const getCategoriesAndDocuments = async () => {
 export const getCategoriesAndDocuments2 = async () => {
   const collectionRef = collection(db,'categories')
   const querySnapShot = await getDocs(collectionRef)
-  const categoryMap = {}
-  querySnapShot.forEach(doc => {
-    // console.log(doc.id, '=>',doc.data());
-    const {title,items} = doc.data()
-    categoryMap[title.toLowerCase()] = items
+  // const categoryMap = {}
+  const categoriesArray = querySnapShot.docs.map(doc => {
+    // console.log(doc.data())
+    return doc.data()
   })
-  return categoryMap
+  return categoriesArray
+  // querySnapShot.forEach(doc => {
+  //   // console.log(doc.id, '=>',doc.data());
+  //   const {title,items} = doc.data()
+  //   categoryMap[title.toLowerCase()] = items
+  // })
+  // return categoryMap
 }
