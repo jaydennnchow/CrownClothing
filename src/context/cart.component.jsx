@@ -113,7 +113,6 @@ export const CartProvider = (props) => {
     }
 
     const setIsCartOpen = newIsCartOpen => {
-        console.log('newIsCartOpen: ', newIsCartOpen);
         dispatch({ type: ACTION_TYPE.SET_IS_CART_OPEN, payload: newIsCartOpen })
     }
 
