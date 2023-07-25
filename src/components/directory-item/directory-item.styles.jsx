@@ -11,7 +11,7 @@ export const BackgroundImage = styled.div`
            传： <BackgroundImage imageUrl={xxx}></BackgroundImage>
            接： ${props => props.imageUrl}
     */
-    background-image: ${props => `url(${props.imageUrl})`}
+    background-image: ${props => `url(${props.imageurl})`}
 `
 
 export const DirectoryItemContainer = styled.div`

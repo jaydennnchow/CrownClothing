@@ -11,7 +11,7 @@ const DirectoryItem = (props) => {
 
     return (
         <DirectoryItemContainer onClick={()=>navigateHandler(item.route)}>
-            <BackgroundImage imageUrl={item.imageUrl}></BackgroundImage>
+            <BackgroundImage imageurl={item.imageUrl}></BackgroundImage>
             <DirectoryItemBody>
                 <h2>{item.title.toUpperCase()}</h2>
                 <p>Shop Now</p>
