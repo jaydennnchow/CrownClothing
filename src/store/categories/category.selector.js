@@ -27,17 +27,26 @@ const categories = state => {
     return state.categories.categories
 }
 
+const selectCategoryReducer = state => state.categories
+
 // 将 categoriesArray 转换成 categoriesMap
 export const getCategories = createSelector(
     // 输入选择器，即：categoryReducer 里面的 categories
-    [categories],
+    [selectCategoryReducer],
     // 将 categories 作为 函数的参数，在函数里面 return 输出结果
-    (categories)=>{
+    (selectCategoryReducer)=>{
         const categoryMap = {}
-        categories.forEach(category => {
+        selectCategoryReducer.categories.forEach(category => {
             const {title,items} = category
             categoryMap[title.toLowerCase()] = items
         });
         return categoryMap
+    }
+)
+
+export const selectIsLoading = createSelector(
+    [selectCategoryReducer],
+    (selectCategoryReducer) => {
+        return selectCategoryReducer.isLoading
     }
 )

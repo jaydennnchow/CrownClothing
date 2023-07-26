@@ -2,8 +2,8 @@ import React, { useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import CategoriesPreview from '../categories-preview/categories-preview.component'
 import Category from '../category/category.component'
-import { getCategoriesAndDocuments2 } from '../utils/firebase.utils'
-import { setCategories } from '../../store/categories/category.action'
+// import { getCategoriesAndDocuments2 } from '../utils/firebase.utils'
+import { fetchCategoriesAsyc, setCategories } from '../../store/categories/category.action'
 import { useDispatch } from 'react-redux'
 
 const Shop = () => {
@@ -16,13 +16,21 @@ const Shop = () => {
 
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    const getCategories = async () => {
-      const categoriesArray = await getCategoriesAndDocuments2()
-      dispatch(setCategories(categoriesArray))
+  // useEffect(() => {
+  //   const getCategories = async () => {
+  //     const categoriesArray = await getCategoriesAndDocuments2()
+  //     dispatch(setCategories(categoriesArray))
+  //   }
+  //   getCategories()
+  // }, [])
+
+  // 使用 redux-thunk 统一管理 异步操作
+  useEffect(()=>{
+    const getCategories = () => {
+      dispatch(fetchCategoriesAsyc())
     }
     getCategories()
-  }, [])
+  },[])
 
   return (
     <Routes>

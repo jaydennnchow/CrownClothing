@@ -9,13 +9,16 @@ import { rootReducer } from './root-reducer'
 // redux 持久化
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
+// redux-thunk
+import thunk from 'redux-thunk'
 
 
 // 1. 配置 持久化对象
 const persistConfig = {
     key: 'root',   // 在localStorge中生成key为root的值
     storage,
-    blacklist: ['user']     //设置某个 reducer 数据不持久化，
+    // blacklist: ['user'],     //设置某个 reducer 数据不持久化，
+    whitelist: ['cart']        // 设置只有某个 reducer 持久化，其他都不持久化
 }
 
 // 2. 生成一个 persistReducer
@@ -24,7 +27,7 @@ const myPersistReducer = persistReducer(persistConfig,rootReducer)
 
 // whenever you dispatch an action, before that action hits the reducers,
 // it hits the middleware first
-const middleWares = [logger]
+const middleWares = [logger,thunk]
 
 const composeEnhancers = compose(applyMiddleware(...middleWares))
 
