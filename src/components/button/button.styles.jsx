@@ -1,10 +1,12 @@
 import styled from 'styled-components'
+import { SpinnerContainer } from '../spinner/spinner.styles'
 
 // styled-components 相当于 将 每个类名className 独立 写成一个 变量
 
 export const BaseButton = styled.button`
     display: flex;
     justify-content: center;
+    align-items: center;
     /* min-width: 165px; */
     width: auto;
     height: 50px;
@@ -52,4 +54,9 @@ export const InvertedButton = styled(BaseButton)`
         color: #fff;
         border: none;
     }
+`
+
+export const ButtonSpinner = styled(SpinnerContainer)`
+    width: 30px;
+    height: 30px;
 `
