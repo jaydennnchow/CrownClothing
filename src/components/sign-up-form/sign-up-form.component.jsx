@@ -4,6 +4,8 @@ import FormInput from '../form-input/form-input.component'
 import './sign-up-form.styles.scss'
 import Button from '../button/button.component'
 import { UserContext } from '../../context/user.component'
+import { useDispatch } from 'react-redux'
+import { signUpStart } from '../../store/user/user.action'
 
 
 const DefaultformFields = {
@@ -18,7 +20,9 @@ const SignUpform = () => {
     const [formFields, setFormFields] = useState(DefaultformFields)
     const { displayName, email, password, confirmPassword } = formFields
 
-    const { setCurrentUser } = useContext(UserContext)
+    // const { setCurrentUser } = useContext(UserContext)
+
+    const dispatch = useDispatch()
 
     // 表单的双向绑定
     const handleChange = (e) => {
@@ -34,13 +38,14 @@ const SignUpform = () => {
         }
         try {
             // 邮箱注册账号
-            const response = await createAuthUserWithEmailAndPassword(email, password)
+            // const response = await createAuthUserWithEmailAndPassword(email, password)
             // 这个 response 和 “SignIn组件中的 const response = await signInWithGooglePopup()”的 一样
             // console.log(response);
             // 把账号存入数据库
-            const additionalInformation = { displayName: displayName }
-            const userDocRef = await createUserDocumentFromAuth(response.user, additionalInformation)
-            if (userDocRef) alert('user created successfully')
+            // const additionalInformation = { displayName: displayName }
+            // const userSnapshot = await createUserDocumentFromAuth(response.user, additionalInformation)
+            // if (userSnapshot) alert('user created successfully')
+            dispatch(signUpStart(email, password, displayName))
             resetFormFields()
         } catch (error) {
             if (error.code === 'auth/email-already-in-use') {

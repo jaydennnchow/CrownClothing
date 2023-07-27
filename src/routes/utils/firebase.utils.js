@@ -67,7 +67,7 @@ export const db = getFirestore()
 /**
  * 判断数据库中是否 存在该用户，
  * 有，则不创建用户，return一个 userDocRef
- * 没有，则创建用户数据，并保存到数据库，最后return一个 userDocRef
+ * 没有，则创建用户数据，并保存到数据库，最后return一个 userSnapShot
  */
 export const createUserDocumentFromAuth = async (userAuth, additionalInformation) => {
   if (!userAuth) return
@@ -98,7 +98,7 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInformation
     }
   }
   // if user exists, return the userDocRef
-  return userDocRef
+  return userSnapShot
 }
 
 // 通过 “邮箱+密码” 注册
@@ -108,9 +108,9 @@ export const createAuthUserWithEmailAndPassword = async (email, password) => {
 }
 
 // 通过 “邮箱+密码” 登录
-export const signInAuthUserWithEmailAndPassword = async (email,password) => {
-  if(!email || !password) return
-  return await signInWithEmailAndPassword(auth,email,password)
+export const signInAuthUserWithEmailAndPassword = async (email, password) => {
+  if (!email || !password) return
+  return await signInWithEmailAndPassword(auth, email, password)
 }
 
 // 退出登录
@@ -123,16 +123,16 @@ export const signOutUser = async () => await signOut(auth)
  * 
  * 2 parameters: auth, callback
  */
-export const onAuthStateChangedListener = (callbak) => onAuthStateChanged(auth,callbak)
+export const onAuthStateChangedListener = (callbak) => onAuthStateChanged(auth, callbak)
 
 // 在 数据库 中，创建 collection 和 批量添加 documents
 export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
-  const collectionRef = collection(db,collectionKey)
+  const collectionRef = collection(db, collectionKey)
   const batch = writeBatch(db)
 
   objectsToAdd.forEach(obejct => {
-    const docRef = doc(collectionRef,obejct.title.toLowerCase())
-    batch.set(docRef,obejct)
+    const docRef = doc(collectionRef, obejct.title.toLowerCase())
+    batch.set(docRef, obejct)
   })
 
   await batch.commit()
@@ -141,7 +141,7 @@ export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => 
 
 // 获取 categories collection 下的 所有数据
 export const getCategoriesAndDocuments = async () => {
-  const collectionRef = collection(db,'categories')
+  const collectionRef = collection(db, 'categories')
   // 创建了一个 查询对象，用于获取集合中的文档。
   const q = query(collectionRef)
 
@@ -150,17 +150,17 @@ export const getCategoriesAndDocuments = async () => {
   // 对查询结果的文档进行遍历，逐个处理文档
   // 对每个文档，从其数据（curr.data()）中解构出 title 和 items 字段的值。
   // 将 title 字段转换为小写，作为类别映射对象 categoryMap 的键，items 作为对应键的值。
-  const categoryMap = querySnapShot.docs.reduce((prev,curr)=>{
-    const {title,items} = curr.data()
+  const categoryMap = querySnapShot.docs.reduce((prev, curr) => {
+    const { title, items } = curr.data()
     prev[title.toLowerCase()] = items
     return prev
-  },{})
+  }, {})
 
   return categoryMap
 }
 
 export const getCategoriesAndDocuments2 = async () => {
-  const collectionRef = collection(db,'categories')
+  const collectionRef = collection(db, 'categories')
   // await Promise.reject(new Error('I made an error hahaha'))
   const querySnapShot = await getDocs(collectionRef)
   // const categoryMap = {}
@@ -175,4 +175,16 @@ export const getCategoriesAndDocuments2 = async () => {
   //   categoryMap[title.toLowerCase()] = items
   // })
   // return categoryMap
+}
+
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      userAuth => {
+        unsubscribe()
+        resolve(userAuth)
+      },
+      reject)
+  })
 }

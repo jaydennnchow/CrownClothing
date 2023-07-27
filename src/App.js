@@ -4,27 +4,31 @@ import Home from "./routes/home/home.component";
 import Navigation from "./routes/navigation/navigation.component";
 import Authentication from './routes/authentication/authentication.component';
 import Checkout from './routes/checkout/checkout.component';
-import { createUserDocumentFromAuth, onAuthStateChangedListener } from './routes/utils/firebase.utils';
+import { createUserDocumentFromAuth, getCurrentUser, onAuthStateChangedListener } from './routes/utils/firebase.utils';
 import { useDispatch } from 'react-redux'
-import { setCurrentUser } from './store/user/user.action';
+import { checkUserSession, setCurrentUser } from './store/user/user.action';
 import { useEffect } from 'react';
 
 function App() {
 
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChangedListener(async user => {
-      // 如果采用 Google账号 登录，就需要 在数据库创建一个新的 用户信息
-      if (user) {
-        await createUserDocumentFromAuth(user)
-      }
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChangedListener(async user => {
+  //     // 如果采用 Google账号 登录，就需要 在数据库创建一个新的 用户信息
+  //     if (user) {
+  //       await createUserDocumentFromAuth(user)
+  //     }
 
-      dispatch(setCurrentUser(user))
-    })
+  //     dispatch(setCurrentUser(user))
+  //   })
 
-    return () => unsubscribe()
-  }, [])
+  //   return () => unsubscribe()
+  // }, [])
+  
+  useEffect(()=>{
+    dispatch(checkUserSession())
+  },[])
 
   return (
     <Routes>

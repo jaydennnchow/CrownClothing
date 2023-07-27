@@ -4,7 +4,9 @@ import FormInput from '../form-input/form-input.component'
 import './sign-in-form.styles.scss'
 import Button from '../button/button.component'
 import { getRedirectResult } from 'firebase/auth'
-import { UserContext } from '../../context/user.component'
+// import { UserContext } from '../../context/user.component'
+import { useDispatch } from 'react-redux'
+import { emailSiginInStart, googleSiginInStart } from '../../store/user/user.action'
 
 
 const DefaultformFields = {
@@ -17,7 +19,8 @@ const SignInform = () => {
     const [formFields, setFormFields] = useState(DefaultformFields)
     const { email, password } = formFields
 
-    const { setCurrentUser } = useContext(UserContext)
+    // const { setCurrentUser } = useContext(UserContext)
+    const dispatch = useDispatch()
 
     // 表单的双向绑定
     const handleChange = (e) => {
@@ -28,9 +31,10 @@ const SignInform = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const response = await signInAuthUserWithEmailAndPassword(email, password)
+            // const response = await signInAuthUserWithEmailAndPassword(email, password)
             // console.log(response);
             // setCurrentUser(response.user)
+            dispatch(emailSiginInStart(email,password))
             alert('login success')
             resetFormFields()
         } catch (error) {
@@ -49,7 +53,7 @@ const SignInform = () => {
 
     // Sign In With Google 按钮的点击事件
     const logGoogleUser = async () => {
-        const response = await signInWithGooglePopup()
+        // const response = await signInWithGooglePopup()
         /**
          * response is a object, 里面包含了 一个user属性，是一个对象
          * user 包含的是 经过身份验证后，Google返回的个人信息，包括 access_token
@@ -57,6 +61,7 @@ const SignInform = () => {
          */
         // console.log(response);
         // const userDocRef = await createUserDocumentFromAuth(response.user)
+        dispatch(googleSiginInStart())
     }
 
     // Sign in with Google Redirect 按钮的点击事件

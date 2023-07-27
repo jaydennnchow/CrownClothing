@@ -9,7 +9,7 @@ import CartIcon from '../../components/cart-icon/cart-icon-component'
 import CartDropdown from '../../components/cart-dropdown/cart-dropdown.component'
 // import { CartContext } from '../../context/cart.component'
 import { getCurrentUser } from '../../store/user/user.selector'
-import { setCurrentUser } from '../../store/user/user.action'
+import { setCurrentUser, signOutStart } from '../../store/user/user.action'
 import { selectIsCartOpen } from '../../store/cart/cart.selector'
 
 const Navigation = () => {
@@ -28,8 +28,9 @@ const Navigation = () => {
     const isCartOpen = useSelector(selectIsCartOpen)
 
     const signOutHandler = async () => {
-        await signOutUser()
-        dispatch(setCurrentUser(null))
+        // await signOutUser()
+        // dispatch(setCurrentUser(null))
+        dispatch(signOutStart())
     }
 
     return (

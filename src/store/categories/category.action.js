@@ -16,22 +16,23 @@ import { CATEGORIES_ACTION_TYPES } from "./category.types"
  * 
  * redux-thunk 的使用目的：
  *      1. 使用 redux 统一管理所有的 side effect，如：异步请求
- *      2. 组件内部不再需要 维护 异步操作，降低维护难度
+ *      2. 组件内部不再需要 维护 各种 side effect
+ *      3. 更好地管理应用程序的 state 和 side effect，使代码更具可测试性和可维护性
  */
 
 // export const setCategories = (categoriesArray) => {
 //     return {type: CATEGORIES_ACTION_TYPES.SET_CATEGORIES,payload:categoriesArray}
 // }
 
-const fetchCategoriesStart = () => {
+export const fetchCategoriesStart = () => {
     return {type:CATEGORIES_ACTION_TYPES.FETCH_CATEGORIES_START,payload:null}
 }
 
-const fetchCategoriesSuccess = (categoriesArray) => {
+export const fetchCategoriesSuccess = (categoriesArray) => {
     return {type:CATEGORIES_ACTION_TYPES.FETCH_CATEGORIES_SUCCESS,payload:categoriesArray}
 }
 
-const fetchCategoriesFailed = (error) => {
+export const fetchCategoriesFailed = (error) => {
     return {type:CATEGORIES_ACTION_TYPES.FETCH_CATEGORIES_FAILED,payload:error}
 }
 
