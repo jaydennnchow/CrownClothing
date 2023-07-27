@@ -4,7 +4,7 @@ import Home from "./routes/home/home.component";
 import Navigation from "./routes/navigation/navigation.component";
 import Authentication from './routes/authentication/authentication.component';
 import Checkout from './routes/checkout/checkout.component';
-import { createUserDocumentFromAuth, getCurrentUser, onAuthStateChangedListener } from './routes/utils/firebase.utils';
+// import { createUserDocumentFromAuth, getCurrentUser, onAuthStateChangedListener } from './routes/utils/firebase.utils';
 import { useDispatch } from 'react-redux'
 import { checkUserSession, setCurrentUser } from './store/user/user.action';
 import { useEffect } from 'react';
