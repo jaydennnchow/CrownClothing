@@ -66,7 +66,7 @@ export const db = getFirestore()
 
 /**
  * 判断数据库中是否 存在该用户，
- * 有，则不创建用户，return一个 userDocRef
+ * 有，则不创建用户，return一个 userSnapShot
  * 没有，则创建用户数据，并保存到数据库，最后return一个 userSnapShot
  */
 export const createUserDocumentFromAuth = async (userAuth, additionalInformation) => {
@@ -133,6 +133,7 @@ export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => 
   objectsToAdd.forEach(obejct => {
     const docRef = doc(collectionRef, obejct.title.toLowerCase())
     batch.set(docRef, obejct)
+    
   })
 
   await batch.commit()

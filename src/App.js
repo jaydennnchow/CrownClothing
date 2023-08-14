@@ -12,19 +12,6 @@ import { useEffect } from 'react';
 function App() {
 
   const dispatch = useDispatch()
-
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChangedListener(async user => {
-  //     // 如果采用 Google账号 登录，就需要 在数据库创建一个新的 用户信息
-  //     if (user) {
-  //       await createUserDocumentFromAuth(user)
-  //     }
-
-  //     dispatch(setCurrentUser(user))
-  //   })
-
-  //   return () => unsubscribe()
-  // }, [])
   
   useEffect(()=>{
     dispatch(checkUserSession())
