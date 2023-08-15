@@ -133,7 +133,7 @@ export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => 
   objectsToAdd.forEach(obejct => {
     const docRef = doc(collectionRef, obejct.title.toLowerCase())
     batch.set(docRef, obejct)
-    
+
   })
 
   await batch.commit()
@@ -188,4 +188,36 @@ export const getCurrentUser = () => {
       },
       reject)
   })
+}
+
+
+// ------------------------- 以下为自我拓展功能部分 -------------------------
+
+export const createUserAddress = async (userId, province, city, street) => {
+  if (!userId || !province || !city || !street) return;
+  const addressDocRef = doc(db, 'address', userId)
+  const addressSnapshot = await getDoc(addressDocRef)
+
+  if (!addressSnapshot.exists()) {
+    try {
+      const time = new Date()
+      await setDoc(addressDocRef, { addressId: time, province, city, street })
+    } catch (error) {
+      console.log('error creating the address', error.message);
+    }
+  }
+
+  return addressSnapshot
+}
+
+export const deleteUserAddress = async (userId, addressId) => {
+  if (!addressId) return;
+  const addressDocRef = doc(db, 'address', userId)
+  const addressSnapshot = await getDoc(addressDocRef)
+  if (!addressSnapshot) {
+    alert('data not exists')
+    return
+  }
+  console.log(addressSnapshot.data())
+  // await setDoc(addressDocRef,)
 }

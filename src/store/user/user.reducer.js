@@ -12,6 +12,16 @@ export const userReducer = (state = INITIAL_STATE, action) => {
     const { type, payload } = action
 
     switch (type) {
+        case USER_ACTION_TYPES.EMAIL_SIGN_IN_START:
+            return {
+                ...state,
+                isLoading:true
+            }
+        case USER_ACTION_TYPES.GOOGLE_SIGN_IN_START:
+            return {
+                ...state,
+                isLoading:true
+            }
         case USER_ACTION_TYPES.SIGN_IN_SUCCESS:
             return {
                 ...state,

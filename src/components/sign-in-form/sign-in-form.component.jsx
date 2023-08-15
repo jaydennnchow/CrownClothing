@@ -5,8 +5,10 @@ import './sign-in-form.styles.scss'
 import Button from '../button/button.component'
 import { getRedirectResult } from 'firebase/auth'
 // import { UserContext } from '../../context/user.component'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { emailSiginInStart, googleSiginInStart } from '../../store/user/user.action'
+import { getCurrentUser, getIsLoading } from '../../store/user/user.selector'
+import { useNavigate } from 'react-router-dom'
 
 
 const DefaultformFields = {
@@ -19,6 +21,23 @@ const SignInform = () => {
     const [formFields, setFormFields] = useState(DefaultformFields)
     const { email, password } = formFields
 
+    const [isProcessingLogin, setIsProcessingLogin] = useState(false)
+    const currentUser = useSelector(getCurrentUser)
+    const isLoading = useSelector(getIsLoading)
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (currentUser) {
+            setIsProcessingLogin(false)
+            alert('login success')
+            navigate('/shop', { replace: true })
+            return
+        }
+        if (isLoading === false) {
+            setIsProcessingLogin(false)
+        }
+    }, [currentUser, isLoading])
+
     // const { setCurrentUser } = useContext(UserContext)
     const dispatch = useDispatch()
 
@@ -28,31 +47,23 @@ const SignInform = () => {
     }
 
     // Sign In 按钮的点击事件
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault()
-        try {
-            // const response = await signInAuthUserWithEmailAndPassword(email, password)
-            // console.log(response);
-            // setCurrentUser(response.user)
-            dispatch(emailSiginInStart(email,password))
-            alert('login success')
-            resetFormFields()
-        } catch (error) {
-            switch (error.code) {
-                case 'auth/user-not-found':
-                    alert('no user associated with this email')
-                    break
-                case 'auth/wrong-password':
-                    alert('incorrect password for email')
-                    break
-                default:
-                    console.log(error);
-            }
+
+        // const response = await signInAuthUserWithEmailAndPassword(email, password)
+        // console.log(response);
+        // setCurrentUser(response.user)
+        if (currentUser) {
+            alert('already login')
+            return
         }
+        setIsProcessingLogin(true)
+        dispatch(emailSiginInStart(email, password))
+        resetFormFields()
     }
 
     // Sign In With Google 按钮的点击事件
-    const logGoogleUser = async () => {
+    const signInWithGoogle = async () => {
         // const response = await signInWithGooglePopup()
         /**
          * response is a object, 里面包含了 一个user属性，是一个对象
@@ -61,6 +72,11 @@ const SignInform = () => {
          */
         // console.log(response);
         // const userDocRef = await createUserDocumentFromAuth(response.user)
+        if (currentUser) {
+            alert('already login')
+            return
+        }
+        setIsProcessingLogin(true)
         dispatch(googleSiginInStart())
     }
 
@@ -100,9 +116,9 @@ const SignInform = () => {
                     name='password'
                 ></FormInput>
                 <div style={{ display: 'flex', justifyContent: "space-between", flexWrap: "wrap", width: '100%' }}>
-                    <Button type='submit'>Sign In</Button>
-                    <Button type='button' buttonType='google' onClick={logGoogleUser}>Sign In With Google</Button>
-                    <Button type='button' buttonType='inverted' onClick={signInWithGoogleRedirect}>Sign in with Google Redirect</Button>
+                    <Button type='submit' isLoading={isProcessingLogin}>Sign In</Button>
+                    <Button type='button' buttonType='google' onClick={signInWithGoogle} isLoading={isProcessingLogin}>Sign In With Google</Button>
+                    {/* <Button type='button' buttonType='inverted' onClick={signInWithGoogleRedirect}>Sign in with Google Redirect</Button> */}
                 </div>
             </form>
         </div>

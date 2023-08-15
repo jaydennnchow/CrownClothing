@@ -57,6 +57,9 @@ const Navigation = () => {
                             </NavLink>
                         )
                     }
+                    <NavLink to={'address'}>
+                        ADDRESS
+                    </NavLink>
                     <CartIcon></CartIcon>
                 </NavLinksContainer>
                 {

@@ -8,6 +8,8 @@ import Checkout from './routes/checkout/checkout.component';
 import { useDispatch } from 'react-redux'
 import { checkUserSession, setCurrentUser } from './store/user/user.action';
 import { useEffect } from 'react';
+import Address from './routes/address/address.component';
+import AuthRoute from './components/auth-route/auth-route.component';
 
 function App() {
 
@@ -23,9 +25,10 @@ function App() {
         <Route index element={<Home></Home>}></Route>
         {/* 路由 多级嵌套
           shop/* : 只要匹配到 "/shop/" 时，都会渲染 <Shop /> */}
-        <Route path="shop/*" element={<Shop></Shop>}></Route>
+        <Route path="shop/*" element={<AuthRoute><Shop></Shop></AuthRoute>}></Route>
         <Route path='auth' element={<Authentication></Authentication>}></Route>
-        <Route path='checkout' element={<Checkout></Checkout>}></Route>
+        <Route path='checkout' element={<AuthRoute><Checkout></Checkout></AuthRoute>}></Route>
+        <Route path='address' element={<AuthRoute><Address></Address></AuthRoute>}></Route>
       </Route>
     </Routes>
   );

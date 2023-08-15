@@ -1,14 +1,14 @@
 import { takeLatest, all, call, put } from 'redux-saga/effects'
 import { USER_ACTION_TYPES } from './user.types'
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth, getCurrentUser, signInAuthUserWithEmailAndPassword, signInWithGooglePopup, signOutUser } from '../../routes/utils/firebase.utils'
-import { siginInFailed, siginInSuccess, siginUpFailed, siginUpSuccess, signOutFailed, signOutSuccess } from './user.action'
+import { emailSiginInStart, siginInFailed, siginInSuccess, siginUpFailed, siginUpSuccess, signOutFailed, signOutSuccess } from './user.action'
 
 
 export function* getSnapshotFromUserAuth(userAuth, additionalInformation) {
     try {
         const userSnapShot = yield call(createUserDocumentFromAuth, userAuth, additionalInformation)
-        console.log(userSnapShot);
-        console.log(userSnapShot.data());
+        // console.log(userSnapShot);
+        // console.log(userSnapShot.data());
         yield put(siginInSuccess({ id: userSnapShot.id, ...userSnapShot.data(), accessToken: userAuth.accessToken }))
     } catch (error) {
         yield put(siginInFailed(error))
@@ -47,10 +47,22 @@ export function* siginInWithEamil(action) {
     const { payload } = action
     const email = payload.email
     const password = payload.password
+
     try {
         const response = yield call(signInAuthUserWithEmailAndPassword, email, password)
         yield call(getSnapshotFromUserAuth, response.user)
     } catch (error) {
+        switch (error.code) {
+            case 'auth/user-not-found':
+                alert('no user associated with this email')
+                break
+            case 'auth/wrong-password':
+                alert('incorrect password for email')
+                break
+            default:
+                alert(error)
+                console.log(error);
+        }
         yield put(siginInFailed(error))
     }
 }
