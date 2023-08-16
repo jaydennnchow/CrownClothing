@@ -251,14 +251,35 @@ export const createUserAddress = async (userId, consignee, province, city, stree
   return addressSnapshot
 }
 
-export const deleteUserAddress = async (userId, addressId) => {
+export const deleteUserAddress = async (userId, addressId, addressList) => {
   if (!addressId) return;
   const addressDocRef = doc(db, 'address', userId)
   const addressSnapshot = await getDoc(addressDocRef)
-  if (!addressSnapshot) {
+  if (!addressSnapshot.exists()) {
     alert('data not exists')
     return
   }
-  console.log(addressSnapshot.data())
-  // await setDoc(addressDocRef,)
+
+  const newAddressList = addressList.filter(address => {
+    return address.addressId.seconds !== addressId.seconds
+  })
+  // console.log(newAddressList);
+
+  const obj = {
+    addressId:[],
+    consignee:[],
+    province:[],
+    city:[],
+    street:[]
+  }
+  newAddressList.forEach(item => {
+    obj.addressId.push(item.addressId)
+    obj.consignee.push(item.consignee)
+    obj.province.push(item.province)
+    obj.city.push(item.city)
+    obj.street.push(item.street)
+  })
+  // console.log(obj);
+
+  await setDoc(addressDocRef,obj)
 }

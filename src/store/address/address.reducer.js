@@ -50,11 +50,11 @@ export const addressReducer = (state=ADDRESS_INITIAL_STATE, action) => {
                 ...state,
                 isLoading: true
             }
-        case ADDRESS_ACTION_TYPES.DELETE_ADDRESS_SUCCESS:
-            return {
-                ...state,
-                isLoading: false,
-            }
+        // case ADDRESS_ACTION_TYPES.DELETE_ADDRESS_SUCCESS:
+        //     return {
+        //         ...state,
+        //         isLoading: false,
+        //     }
         case ADDRESS_ACTION_TYPES.DELETE_ADDRESS_FAILED:
             return {
                 ...state,

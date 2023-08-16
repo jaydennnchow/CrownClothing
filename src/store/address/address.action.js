@@ -22,3 +22,15 @@ export const addAddressSuccess = (userId) => {
 export const addAddressFailed = (error) => {
     return { type: ADDRESS_ACTION_TYPES.ADD_ADDRESS_FAILED, payload: error }
 }
+
+export const deleteAddressStart = (userId, addressId, addressList) => {
+    return { type: ADDRESS_ACTION_TYPES.DELETE_ADDRESS_START, payload: { userId, addressId, addressList } }
+}
+
+export const deleteAddressSuccess = (userId) => {
+    return { type: ADDRESS_ACTION_TYPES.DELETE_ADDRESS_SUCCESS, payload: userId }
+}
+
+export const deleteAddressFailed = (error) => {
+    return { type: ADDRESS_ACTION_TYPES.DELETE_ADDRESS_FAILED, payload: error }
+}

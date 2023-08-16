@@ -1,7 +1,7 @@
 import { takeLatest, all, call, put } from 'redux-saga/effects'
 import { ADDRESS_ACTION_TYPES } from './address.types'
-import { createUserAddress, getUserAddress } from '../../routes/utils/firebase.utils'
-import { addAddressFailed, addAddressSuccess, fetchAddressFailed, fetchAddressStart, fetchAddressSuccess } from './address.action'
+import { createUserAddress, deleteUserAddress, getUserAddress } from '../../routes/utils/firebase.utils'
+import { addAddressFailed, addAddressSuccess, deleteAddressFailed, deleteAddressSuccess, fetchAddressFailed, fetchAddressStart, fetchAddressSuccess } from './address.action'
 
 
 
@@ -14,7 +14,7 @@ export function* getAddress(action) {
 
     try {
         const addressMap = yield call(getUserAddress, userId, addressId)
-        console.log(addressMap);
+        // console.log(addressMap);
         yield put(fetchAddressSuccess(addressMap))
     } catch (error) {
         yield put(fetchAddressFailed(error))
@@ -60,7 +60,34 @@ export function* onAddAddress() {
 // ---------------- Add Address End ----------------
 
 
+// ---------------- Delete Address Start ----------------
+export function* fetchAddressAfterDeleting(action){
+    const { payload } = action
+    const userId = payload
 
+    yield put(fetchAddressStart({ userId }))
+}
+
+export function* onDeleteAddressSuccess(){
+    yield takeLatest(ADDRESS_ACTION_TYPES.DELETE_ADDRESS_SUCCESS,fetchAddressAfterDeleting)
+}
+
+export function* deleteAddress(action) {
+    const { payload } = action
+    const { userId, addressId, addressList } = payload
+
+    try {
+        yield call(deleteUserAddress,userId, addressId, addressList)
+        yield put(deleteAddressSuccess(userId))
+    } catch (error) {
+        yield put(deleteAddressFailed(error))
+    }
+}
+
+export function* onDeleteAddress() {
+    yield takeLatest(ADDRESS_ACTION_TYPES.DELETE_ADDRESS_START, deleteAddress)
+}
+// ---------------- Delete Address End ----------------
 
 
 
@@ -68,6 +95,8 @@ export function* addressSaga() {
     yield all([
         call(onFetchAddress),
         call(onAddAddress),
-        call(onAddAddressSuccess)
+        call(onAddAddressSuccess),
+        call(onDeleteAddress),
+        call(onDeleteAddressSuccess)
     ])
 }
