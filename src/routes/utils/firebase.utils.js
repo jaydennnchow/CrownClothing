@@ -193,18 +193,59 @@ export const getCurrentUser = () => {
 
 // ------------------------- 以下为自我拓展功能部分 -------------------------
 
-export const createUserAddress = async (userId, province, city, street) => {
-  if (!userId || !province || !city || !street) return;
+export const getUserAddress = async (userId, addressId = null) => {
+  if (!userId) return null;
+  // const addressMap = {}
+  const addressDocRef = doc(db, 'address', userId)
+  const addressSnapShot = await getDoc(addressDocRef)
+
+  if (!addressId) {
+    if (addressSnapShot.exists()) {
+      return addressSnapShot.data()
+    }
+  } else {
+    // 根据 addressId，找到对应的 address
+
+    if (addressSnapShot.exists()) {
+      // const index = 
+    }
+  }
+
+  // return addressMap
+}
+
+export const createUserAddress = async (userId, consignee, province, city, street, oldAddressMap) => {
+  if (!userId || !consignee || !province || !city || !street) return;
   const addressDocRef = doc(db, 'address', userId)
   const addressSnapshot = await getDoc(addressDocRef)
+  const time = new Date()
 
   if (!addressSnapshot.exists()) {
     try {
-      const time = new Date()
-      await setDoc(addressDocRef, { addressId: time, province, city, street })
+      await setDoc(addressDocRef, {
+        addressId: [time],
+        consignee: [consignee],
+        province: [province],
+        city: [city],
+        street: [street]
+      })
     } catch (error) {
       console.log('error creating the address', error.message);
     }
+  } else {
+    const { addressId: oldAddressId,
+      consignee: oldConsignee,
+      province: oldProvince,
+      city: oldCity,
+      street: oldStreet } = oldAddressMap
+
+    await setDoc(addressDocRef, {
+      addressId: [...oldAddressId, time],
+      consignee: [...oldConsignee, consignee],
+      province: [...oldProvince, province],
+      city: [...oldCity, city],
+      street: [...oldStreet, street]
+    })
   }
 
   return addressSnapshot

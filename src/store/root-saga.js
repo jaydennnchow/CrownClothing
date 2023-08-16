@@ -5,5 +5,9 @@ import { addressSaga } from './address/address.saga'
 
 
 export function* rootSaga() {
-    yield all([call(categoriesSaga), call(userSaga),])
+    yield all([
+        call(categoriesSaga), 
+        call(userSaga),
+        call(addressSaga)
+    ])
 }

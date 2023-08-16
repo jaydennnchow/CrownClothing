@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { emailSiginInStart, googleSiginInStart } from '../../store/user/user.action'
 import { getCurrentUser, getIsLoading } from '../../store/user/user.selector'
 import { useNavigate } from 'react-router-dom'
+import { fetchAddressStart } from '../../store/address/address.action'
 
 
 const DefaultformFields = {
@@ -25,11 +26,13 @@ const SignInform = () => {
     const currentUser = useSelector(getCurrentUser)
     const isLoading = useSelector(getIsLoading)
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     useEffect(() => {
         if (currentUser) {
             setIsProcessingLogin(false)
-            alert('login success')
+            // 成功登录后，就马上获取该用户的所有地址信息
+            dispatch(fetchAddressStart({userId: currentUser.id}))
             navigate('/shop', { replace: true })
             return
         }
@@ -39,7 +42,6 @@ const SignInform = () => {
     }, [currentUser, isLoading])
 
     // const { setCurrentUser } = useContext(UserContext)
-    const dispatch = useDispatch()
 
     // 表单的双向绑定
     const handleChange = (e) => {

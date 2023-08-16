@@ -9,7 +9,7 @@ const AuthRoute = ({ children }) => {
     if (currentUser) {
         return <>{children}</>
     } else {
-        alert('Please sign in first')
+        // alert('Please sign in first')
         return <Navigate to={'/auth'}></Navigate>
     }
 }

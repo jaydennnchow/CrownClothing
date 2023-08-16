@@ -1,12 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import FormInput from '../form-input/form-input.component'
 import Button from '../button/button.component'
 import './address-form.styles.scss'
+import { useDispatch, useSelector } from 'react-redux'
+import { getCurrentUser } from '../../store/user/user.selector'
+import { addAddressStart } from '../../store/address/address.action'
+import { selectOldAddressMap } from '../../store/address/address.selector'
 
 
 const DefaultformFields = {
+    userId: '',
     consignee: '',
-    consigneeId: '',
     province: '',
     city: '',
     street: ''
@@ -16,11 +20,25 @@ const AddressForm = () => {
 
     const [address, setAddress] = useState(DefaultformFields)
     const { consignee, province, city, street } = address
+    const currentUser = useSelector(getCurrentUser)
+    const { displayName, id } = currentUser
+    const oldAddressMap = useSelector(selectOldAddressMap)
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (currentUser) {
+            address.consignee = displayName
+            address.userId = id
+        }
+    }, [])
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
-        
+
+        // console.log(address)
+        dispatch(addAddressStart(address,oldAddressMap))
+        resetFormFields()
     }
 
     // 表单的双向绑定
@@ -33,7 +51,7 @@ const AddressForm = () => {
     return (
         <div className='address-form-container'>
             <h2>Add an address</h2>
-            <form onSubmit={handleSubmit} autocomplete="off">
+            <form onSubmit={handleSubmit} autoComplete="off">
                 <FormInput
                     name='consignee'
                     label='Consignee'

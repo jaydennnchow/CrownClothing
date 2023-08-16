@@ -3,7 +3,7 @@ import { ADDRESS_ACTION_TYPES } from "./address.types"
 
 
 export const ADDRESS_INITIAL_STATE = {
-    addressList: [],
+    addressMap: {},
     isLoading: false,
     error: null
 }
@@ -21,7 +21,7 @@ export const addressReducer = (state=ADDRESS_INITIAL_STATE, action) => {
             return {
                 ...state,
                 isLoading: false,
-                addressList: payload
+                addressMap: payload
             }
         case ADDRESS_ACTION_TYPES.FETCH_ADDRESS_FAILED:
             return {
@@ -34,11 +34,11 @@ export const addressReducer = (state=ADDRESS_INITIAL_STATE, action) => {
                 ...state,
                 isLoading: true
             }
-        case ADDRESS_ACTION_TYPES.ADD_ADDRESS_SUCCESS:
-            return {
-                ...state,
-                isLoading: false,
-            }
+        // case ADDRESS_ACTION_TYPES.ADD_ADDRESS_SUCCESS:
+        //     return {
+        //         ...state,
+        //         isLoading: false,
+        //     }
         case ADDRESS_ACTION_TYPES.ADD_ADDRESS_FAILED:
             return {
                 ...state,
