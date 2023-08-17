@@ -18,7 +18,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <PersistGate persistor={persistor}>
+      {/* <PersistGate persistor={persistor}> */}
         <BrowserRouter>
           {/* <UserProvider> */}
           {/* <CategoriesProvider> */}
@@ -30,7 +30,7 @@ root.render(
           {/* </CategoriesProvider> */}
           {/* </UserProvider> */}
         </BrowserRouter>
-      </PersistGate>
+      {/* </PersistGate> */}
     </Provider>
   </React.StrictMode>
 );

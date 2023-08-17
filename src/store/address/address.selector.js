@@ -15,6 +15,8 @@ export const selectAddressListFromMap = createSelector(
     [selectAddressReducer],
     (selectAddressReducer) => {
         const addressMap = selectAddressReducer.addressMap
+        // console.log(selectAddressReducer);
+        // console.log(JSON.stringify(addressMap));
         if(JSON.stringify(addressMap) !== "{}"){
             // console.log(addressMap);
             const addressList = addressMap.addressId.map((addressId, index) => ({

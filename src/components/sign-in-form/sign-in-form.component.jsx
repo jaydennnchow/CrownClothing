@@ -10,6 +10,7 @@ import { emailSiginInStart, googleSiginInStart } from '../../store/user/user.act
 import { getCurrentUser, getIsLoading } from '../../store/user/user.selector'
 import { useNavigate } from 'react-router-dom'
 import { fetchAddressStart } from '../../store/address/address.action'
+import { fetchCartStart } from '../../store/cart/cart.action'
 
 
 const DefaultformFields = {
@@ -31,8 +32,9 @@ const SignInform = () => {
     useEffect(() => {
         if (currentUser) {
             setIsProcessingLogin(false)
-            // 成功登录后，就马上获取该用户的所有地址信息
+            // 成功登录后，就马上获取该用户的所有地址信息、购物车
             dispatch(fetchAddressStart({userId: currentUser.id}))
+            dispatch(fetchCartStart(currentUser.id))
             navigate('/shop', { replace: true })
             return
         }

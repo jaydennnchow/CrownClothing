@@ -202,13 +202,11 @@ export const getUserAddress = async (userId, addressId = null) => {
   if (!addressId) {
     if (addressSnapShot.exists()) {
       return addressSnapShot.data()
+    }else{
+      return {}
     }
   } else {
-    // 根据 addressId，找到对应的 address
-
-    if (addressSnapShot.exists()) {
-      // const index = 
-    }
+    return {}
   }
 
   // return addressMap
@@ -266,11 +264,11 @@ export const deleteUserAddress = async (userId, addressId, addressList) => {
   // console.log(newAddressList);
 
   const obj = {
-    addressId:[],
-    consignee:[],
-    province:[],
-    city:[],
-    street:[]
+    addressId: [],
+    consignee: [],
+    province: [],
+    city: [],
+    street: []
   }
   newAddressList.forEach(item => {
     obj.addressId.push(item.addressId)
@@ -281,5 +279,22 @@ export const deleteUserAddress = async (userId, addressId, addressList) => {
   })
   // console.log(obj);
 
-  await setDoc(addressDocRef,obj)
+  await setDoc(addressDocRef, obj)
+}
+
+
+export const getUserCart = async (userId) => {
+  const cartDocRef = doc(db, 'cart', userId)
+  const cartSnapShot = await getDoc(cartDocRef)
+  if (cartSnapShot.exists()) {
+    const { cart } = cartSnapShot.data()
+    return cart
+  } else {
+    return []
+  }
+}
+
+export const setUserCart = async (userId, cart) => {
+  const cartDocRef = doc(db, 'cart', userId)
+  await setDoc(cartDocRef, { cart })
 }

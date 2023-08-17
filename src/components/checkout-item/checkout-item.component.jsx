@@ -2,8 +2,9 @@ import React, { useContext } from 'react'
 import './checkout-item.styles.scss'
 // import { CartContext } from '../../context/cart.component'
 import { useDispatch, useSelector } from 'react-redux'
-import { addItemToCart, clearItemFormCart, removeItemFromCart } from '../../store/cart/cart.action'
+import { addItemToCart, clearItemFormCart, removeItemFromCart, setCartStart } from '../../store/cart/cart.action'
 import { selectCartItems } from '../../store/cart/cart.selector'
+import { getCurrentUser } from '../../store/user/user.selector'
 
 const CheckoutItem = ({ product }) => {
 
@@ -12,17 +13,18 @@ const CheckoutItem = ({ product }) => {
     const { name, price, quantity, imageUrl } = product
     // const { addItemToCart, removeItemFromCart, clearItemFormCart } = useContext(CartContext)
     const cartItems = useSelector(selectCartItems)
+    const currentUser = useSelector(getCurrentUser)
 
     const increaseProduct = (product) => {
-        dispatch(addItemToCart(cartItems, product))
+        dispatch(setCartStart(currentUser.id, cartItems, product, 'increase'))
     }
 
     const decreaseProduct = (product) => {
-        dispatch(removeItemFromCart(cartItems, product))
+        dispatch(setCartStart(currentUser.id, cartItems, product, 'decrease'))
     }
 
     const clearProduct = (product) => {
-        dispatch(clearItemFormCart(cartItems, product))
+        dispatch(setCartStart(currentUser.id, cartItems, product, 'clear'))
     }
 
     return (

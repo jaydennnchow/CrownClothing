@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import { ReactComponent as CrwnLogo } from '../../assets/crown.svg'
 import { NavigationContainer, LogoContainer, NavLinksContainer, NavLink } from './navigation.styles'
@@ -32,6 +32,12 @@ const Navigation = () => {
         // dispatch(setCurrentUser(null))
         dispatch(signOutStart())
     }
+
+    // useEffect(()=>{
+    //     if(!currentUser){
+            
+    //     }
+    // },[currentUser])
 
     return (
         <>
