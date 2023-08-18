@@ -42,7 +42,8 @@ const composeEnhancers = compose(applyMiddleware(...middleWares))
  * 3 arguments: rootReducer, store 的 初始状态, 增强Redux store功能的函数
  */
 // 3. 将 createStore 的第一个参数 改为 persistReducer
-export const store = createStore(myPersistReducer, undefined, composeEnhancers)
+// export const store = createStore(myPersistReducer, undefined, composeEnhancers)
+export const store = createStore(rootReducer, undefined, composeEnhancers)
 
 // 启动 sagaMiddleware, 并执行 rootSaga函数 中的 saga 流程
 sagaMiddleware.run(rootSaga)
