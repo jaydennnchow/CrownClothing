@@ -75,9 +75,10 @@ export function* setCart(action) {
         yield put(removeItemFromCart(userId, cartItems, product))
     } else if (operation === 'clear') {
         yield put(clearItemFormCart(userId, cartItems, product))
-    } else if (operation === 'clearAfterPayment') {
-        yield put(clearItemFromCartAfterPayment(userId))
-    }
+    } 
+    // else if (operation === 'clearAfterPayment') {
+    //     yield put(clearItemFromCartAfterPayment(userId))
+    // }
 }
 
 export function* onSetCart() {
@@ -94,6 +95,7 @@ export function* cartSaga() {
         call(onAdd),
         call(onRemove),
         call(onClear),
-        call(onSettleCartSuccess)
+        call(onSettleCartSuccess),
+        call(onClearAfterPayment)
     ])
 }
