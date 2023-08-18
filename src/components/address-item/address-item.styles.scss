@@ -22,14 +22,27 @@
         width: 70%;
         height: 20%;
 
-        &.delete{
+        .delete{
             font-weight: bold;
             cursor: pointer;
             font-size: 20px;
         }
-        &.delete:hover{
+        .delete:hover{
             color: red;
             font-weight: bolder;
+        }
+
+        .choose {
+            font-weight: bold;
+            font-size: 20px;
+            margin-left: 15px;
+        }
+
+        input{
+            width: 20px;
+            height: 20px;
+            margin-left: 15px;
+            cursor: pointer;
         }
     }
 }

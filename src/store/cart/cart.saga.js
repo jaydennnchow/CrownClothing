@@ -1,7 +1,7 @@
 import { takeLatest, all, call, put } from 'redux-saga/effects'
 import { CART_ACTION_TYPE } from './cart.types'
 import { getUserCart, setUserCart } from '../../routes/utils/firebase.utils'
-import { addItemToCart, clearItemFormCart, fetchCartFailed, fetchCartStart, fetchCartSuccess, removeItemFromCart, setCartFailed, setCartSuccess } from './cart.action'
+import { addItemToCart, clearItemFormCart, clearItemFromCartAfterPayment, fetchCartFailed, fetchCartStart, fetchCartSuccess, removeItemFromCart, setCartFailed, setCartSuccess } from './cart.action'
 
 
 
@@ -26,9 +26,8 @@ export function* onFetchCart() {
 
 
 // ---------------- Set Cart Start(增加、删除、一键删除合埋一起处理) ----------------
-
-export function* fetchCartAfterSettling(action){
-    const {payload} = action
+export function* fetchCartAfterSettling(action) {
+    const { payload } = action
     const userId = payload
 
     yield put(fetchCartStart(userId))
@@ -39,11 +38,11 @@ export function* onSettleCartSuccess() {
 }
 
 export function* settle(action) {
-    const {payload} = action
-    const {userId, newCartItems} = payload
+    const { payload } = action
+    const { userId, newCartItems } = payload
 
     try {
-        yield call(setUserCart,userId,newCartItems)
+        yield call(setUserCart, userId, newCartItems)
         yield put(setCartSuccess(userId))
     } catch (error) {
         yield put(setCartFailed(error))
@@ -62,6 +61,10 @@ export function* onClear() {
     yield takeLatest(CART_ACTION_TYPE.CLEAR_CART_ITEMS, settle)
 }
 
+export function* onClearAfterPayment() {
+    yield takeLatest(CART_ACTION_TYPE.CLEAR_CART_ITEMS_AFTER_PAYMENT, settle)
+}
+
 export function* setCart(action) {
     const { payload } = action
     const { userId, cartItems, product, operation } = payload
@@ -70,8 +73,10 @@ export function* setCart(action) {
         yield put(addItemToCart(userId, cartItems, product))
     } else if (operation === 'decrease') {
         yield put(removeItemFromCart(userId, cartItems, product))
-    } else {
+    } else if (operation === 'clear') {
         yield put(clearItemFormCart(userId, cartItems, product))
+    } else if (operation === 'clearAfterPayment') {
+        yield put(clearItemFromCartAfterPayment(userId))
     }
 }
 

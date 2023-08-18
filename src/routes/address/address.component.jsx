@@ -7,7 +7,9 @@ import { fetchAddressStart } from '../../store/address/address.action'
 import { getCurrentUser } from '../../store/user/user.selector'
 import { selectAddressListFromMap } from '../../store/address/address.selector'
 
-const Address = () => {
+const Address = (props) => {
+
+  const { isOnCheckOut, getCheckBoxIsChecked } = props
 
   const currentUser = useSelector(getCurrentUser)
   const addressList = useSelector(selectAddressListFromMap)
@@ -18,14 +20,18 @@ const Address = () => {
   }, [])
 
 
- 
+
 
   return (
     <div className='address-container'>
       <div className='address-list'>
         {
           addressList && addressList.length > 0 ? (
-            addressList.map(address => <AddressItem key={address.addressId} address={address}></AddressItem>)
+            addressList.map(address => <AddressItem
+              key={address.addressId}
+              address={address}
+              isOnCheckOut={isOnCheckOut}
+              getCheckBoxIsChecked={getCheckBoxIsChecked}></AddressItem>)
           ) : (
             <p>
               Don't have an address yet? Go ahead and add one!

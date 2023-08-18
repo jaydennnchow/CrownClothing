@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { FormContainer, PaymentButton, PaymentFormContainer } from './payment-form.styles'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getCurrentUser } from '../../store/user/user.selector'
 import { selectCartTotal } from '../../store/cart/cart.selector'
+import { clearItemFromCartAfterPayment } from '../../store/cart/cart.action'
 
 const PaymentForm = () => {
 
@@ -11,6 +12,7 @@ const PaymentForm = () => {
     const amount = useSelector(selectCartTotal)
 
     const [isProcessingPayment,setIsProcessingPayment] = useState(false)
+    const dispatch = useDispatch()
 
     // stripe 执行与 Stripe API 的交互,如：创建支付方法 或 确认付款意图
     const stripe = useStripe()
@@ -54,6 +56,7 @@ const PaymentForm = () => {
             alert(paymentResult.error)
         } else {
             alert('Payment Successful')
+            dispatch(clearItemFromCartAfterPayment(currentUser.id))
         }
     }
 

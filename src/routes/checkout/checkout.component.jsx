@@ -2,15 +2,22 @@ import React, { useContext } from 'react'
 import './checkout.styles.scss'
 // import { CartContext } from '../../context/cart.component'
 import CheckoutItem from '../../components/checkout-item/checkout-item.component'
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
 import { selectCartItems, selectCartTotal } from '../../store/cart/cart.selector'
 import PaymentForm from '../../components/payment-form/payment-form.component'
+import Address from '../address/address.component'
 
 const Checkout = () => {
 
     // const { cartItems, cartTotal } = useContext(CartContext)
     const cartItems = useSelector(selectCartItems)
     const cartTotal = useSelector(selectCartTotal)
+
+    const getCheckBoxIsChecked = (isChecked) => {
+        if(isChecked){
+            console.log(isChecked);
+        }
+    }
 
     return (
         <div className='checkout-container'>
@@ -36,10 +43,18 @@ const Checkout = () => {
                 cartItems.map(item => <CheckoutItem key={item.id} product={item}></CheckoutItem>)
             }
             <span className='total'>Total: ${cartTotal}</span>
+
+            {/* Address */}
+            {/* <Address></Address> */}
             {
-                cartItems.length > 0 && <PaymentForm></PaymentForm>
+                cartItems.length > 0 && (
+                    <>
+                        <Address isOnCheckOut={true} getCheckBoxIsChecked={getCheckBoxIsChecked}></Address>
+                        <PaymentForm></PaymentForm>
+                    </>
+                )
             }
-            
+
         </div>
     )
 }

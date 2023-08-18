@@ -82,3 +82,7 @@ export const clearItemFormCart = (userId, cartItems, product) => {
 export const signOutCart = () => {
     return { type: CART_ACTION_TYPE.SIGN_OUT_CART_ITEMS }
 }
+
+export const clearItemFromCartAfterPayment = (userId) => {
+    return { type: CART_ACTION_TYPE.CLEAR_CART_ITEMS_AFTER_PAYMENT, payload: { userId, newCartItems: [] } }
+}
